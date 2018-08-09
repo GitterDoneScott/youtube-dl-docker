@@ -44,11 +44,11 @@ then
     chmod a+rx /usr/local/bin/youtube-dl
   else
     # Download and unpack release
-    wget -q https://github.com/rg3/youtube-dl/releases/download/$RELEASE/youtube-dl-$RELEASE.tar.gz
-    cd /root
-    tar -xzf /root/latest.tar.gz get_iplayer-$RELEASE --directory /root/ --strip-components=1
-    cp -f youtube-dl /usr/local/bin
-    rm /root/latest.tar.gz
+    wget -q https://github.com/rg3/youtube-dl/releases/download/$RELEASE/youtube-dl-$RELEASE.tar.gz -O /root/latest.tar.gz
+    tar -xzf /root/latest.tar.gz --directory /root/
+    cp -f /root/youtube-dl/youtube-dl /usr/local/bin/
+    #rm -f /root/latest.tar.gz
+    #rm -Rf youtube-dl
   fi
 
   echo Getting latest version of youtube-dl-webui...
