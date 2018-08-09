@@ -2,9 +2,9 @@
 
 echo Checking latest version of youtube-dl...
 # Get cgi script version
-if [[ -f /root/get_iplayer.cgi ]]
+if [[ -f /usr/local/bin/youtube-dl ]]
 then
-  VERSION=$(cat /root/get_iplayer.cgi | grep VERSION | grep -oP 'VERSION\ =\ \K.*?(?=;)' | head -1)
+  VERSION=$(/usr/local/bin/youtube-dl --version)
 fi
 
 echo Checking latest version of youtube-dl-webui...
@@ -27,6 +27,9 @@ RELEASE=$(wget -q -O - "https://api.github.com/repos/rg3/youtube-dl/releases/lat
 #  echo ******** Warning - unable to check latest release!!  Please raise an issue https://github.com/kolonuk/get_iplayer-docker/issues/new
 #fi
 
+echo VERSION: $VERSION
+ehco RELEASE: $RELEASE
+
 if [[ "$VERSION" == "" ]] || \
    [[ "$VERSIONwebui" == "" ]] || \
    [[ "$VERSION" != "$RELEASE" ]] || \
@@ -41,12 +44,11 @@ then
     chmod a+rx /usr/local/bin/youtube-dl
   else
     # Download and unpack release
-    wget -q https://github.com/rg3/youtube-dl/archive/v$RELEASE.tar.gz -O /root/latest.tar.gz
-    wget -q https://github.com/rg3/youtube-dl/releases/download/$RELEASE/youtube-dl-RELEASE.tar.gz
-    
+    wget -q https://github.com/rg3/youtube-dl/releases/download/$RELEASE/youtube-dl-$RELEASE.tar.gz
     cd /root
     tar -xzf /root/latest.tar.gz get_iplayer-$RELEASE --directory /root/ --strip-components=1
-    #rm /root/latest.tar.gz
+    cp -f youtube-dl /usr/local/bin
+    rm /root/latest.tar.gz
   fi
 
   echo Getting latest version of youtube-dl-webui...
