@@ -28,7 +28,7 @@ RELEASE=$(wget -q -O - "https://api.github.com/repos/rg3/youtube-dl/releases/lat
 #fi
 
 echo VERSION: $VERSION
-ehco RELEASE: $RELEASE
+echo RELEASE: $RELEASE
 
 if [[ "$VERSION" == "" ]] || \
    [[ "$VERSIONwebui" == "" ]] || \
