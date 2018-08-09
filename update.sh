@@ -15,7 +15,7 @@ echo Checking latest version of youtube-dl-webui...
 #fi
 
 # Get current github release version of youtube-dl
-RELEASE=$(wget -q -O - "https://api.github.com/repos/rg3/youtube-dl/releases/latest" | grep -Po '"tag_name": "v\K.*?(?=")')
+RELEASE=$(wget -q -O - "https://api.github.com/repos/rg3/youtube-dl/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
 
 # Get current github release version of youtube-dl-webui
 #RELEASEwebui=$(wget -q -O - "https://api.github.com/repos/rg3/youtube-dl/releases/latest" | grep -Po '"tag_name": "v\K.*?(?=")')
