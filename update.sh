@@ -20,7 +20,7 @@ fi
 RELEASE=$(wget -q -O - "https://api.github.com/repos/rg3/youtube-dl/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
 
 # Get current github release version of youtube-dl-webui
-RELEASEwebui=$(wget -q -O - "https://api.github.com/repos/d0u9/youtube-dl-webui/releases/latest" | grep -Po '"tag_name": "v\K.*?(?=")')
+RELEASEwebui=$(wget -q -O - "https://api.github.com/repos/d0u9/youtube-dl-webui/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
 
 #flask release
 
