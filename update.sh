@@ -1,24 +1,28 @@
 #!/bin/bash
 
-echo Checking latest version of youtube-dl...
+echo Checking installed versions...
+
 # Get cgi script version
 if [[ -f /usr/local/bin/youtube-dl ]]
 then
   VERSION=$(/usr/local/bin/youtube-dl --version)
 fi
 
-echo Checking latest version of youtube-dl-webui...
 # Get main script version
 #if [[ -f /root/get_iplayer ]]
 #then
 #  VERSIONwebui=$(cat /root/get_iplayer | grep version | grep -oP 'version\ =\ \K.*?(?=;)' | head -1)
 #fi
 
+#flask version installed
+
 # Get current github release version of youtube-dl
 RELEASE=$(wget -q -O - "https://api.github.com/repos/rg3/youtube-dl/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
 
 # Get current github release version of youtube-dl-webui
-#RELEASEwebui=$(wget -q -O - "https://api.github.com/repos/rg3/youtube-dl/releases/latest" | grep -Po '"tag_name": "v\K.*?(?=")')
+RELEASEwebui=$(wget -q -O - "https://api.github.com/repos/d0u9/youtube-dl-webui/releases/latest" | grep -Po '"tag_name": "v\K.*?(?=")')
+
+#flask release
 
 # If no github version returned
 #if ( [[ "$RELEASE" == "" ]] || [[ "$RELEASEwebui" == "" ]] ) && [[ "$FORCEDOWNLOAD" -eq "" ]]
@@ -29,6 +33,8 @@ RELEASE=$(wget -q -O - "https://api.github.com/repos/rg3/youtube-dl/releases/lat
 
 echo VERSION: $VERSION
 echo RELEASE: $RELEASE
+echo VERSION webui: $VERSIONwebui
+echo RELEASE webui: $RELEASEwebui
 
 if [[ "$VERSION" == "" ]] || \
    [[ "$VERSIONwebui" == "" ]] || \
@@ -47,8 +53,8 @@ then
     wget -q https://github.com/rg3/youtube-dl/releases/download/$RELEASE/youtube-dl-$RELEASE.tar.gz -O /root/latest.tar.gz
     tar -xzf /root/latest.tar.gz --directory /root/
     cp -f /root/youtube-dl/youtube-dl /usr/local/bin/
-    #rm -f /root/latest.tar.gz
-    #rm -Rf youtube-dl
+    rm -f /root/latest.tar.gz
+    rm -Rf youtube-dl
   fi
 
   echo Getting latest version of youtube-dl-webui...
