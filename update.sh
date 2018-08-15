@@ -64,11 +64,10 @@ then
   if [[ "$RELEASEwebui" == "" ]]
   then
   # No release returned from github, download manually
-  #  wget -q https://raw.githubusercontent.com/get-iplayer/get_iplayer/master/get_iplayer.cgi -O /root/get_iplayer.cgi
     wget -q https://github.com/d0u9/youtube-dl-webui/archive/master.zip -O /root/latestwebui.zip
     cd /root
     unzip latestwebui.zip
-    rm latestwebui.zip
+    rm -f latestwebui.zip
     cd youtube-dl-webui-master
     python setup.sh install
     if [[ ! -f /root/config/youtube-dl-webui.config ]]
@@ -81,7 +80,7 @@ then
     wget -q https://github.com/d0u9/youtube-dl-webui/archive/$RELEASEwebui.tar.gz -O /root/latestwebui.tar.gz
     cd /root
     tar -xzf /root/latestwebui.tar.gz youtube-dl-webui-$RELEASE --directory /root/
-    rm /root/latestwebui.tar.gz
+    rm -f /root/latestwebui.tar.gz
     cd youtube-dl-webui-$RELEASE
     python setup.sh install
     if [[ ! -f /root/config/youtube-dl-webui.config ]]
