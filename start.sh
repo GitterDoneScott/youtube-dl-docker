@@ -30,7 +30,7 @@ fi
 #echo Forcing output location...
 #/root/get_iplayer --prefs-add --output="/root/output/"
 
-if [[ -f /usr/local/bin/youtube-dl ]]
+if [[ -f /usr/local/bin/youtube-dl-webui ]]
 then
   # Start cron
   #service cron start
