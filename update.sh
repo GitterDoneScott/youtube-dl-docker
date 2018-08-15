@@ -2,19 +2,17 @@
 
 echo Checking installed versions...
 
-# Get cgi script version
+# Get youtube-dl version
 if [[ -f /usr/local/bin/youtube-dl ]]
 then
   VERSION=$(/usr/local/bin/youtube-dl --version)
 fi
 
-# Get main script version
-#if [[ -f /root/get_iplayer ]]
-#then
-#  VERSIONwebui=$(cat /root/get_iplayer | grep version | grep -oP 'version\ =\ \K.*?(?=;)' | head -1)
-#fi
-
-#flask version installed
+# Get youtube-dl-webui version
+if [[ -f /usr/local/bin/youtube-dl-webui ]]
+then
+  VERSIONwebui=$(cat /usr/local/bin/youtube-dl-webui | grep youtube-dl-webui | grep -oP "youtube-dl-webui==\K.*?(?=')" | head -1)
+fi
 
 # Get current github release version of youtube-dl
 RELEASE=$(wget -q -O - "https://api.github.com/repos/rg3/youtube-dl/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
@@ -25,11 +23,11 @@ RELEASEwebui=$(wget -q -O - "https://api.github.com/repos/d0u9/youtube-dl-webui/
 #flask release
 
 # If no github version returned
-#if ( [[ "$RELEASE" == "" ]] || [[ "$RELEASEwebui" == "" ]] ) && [[ "$FORCEDOWNLOAD" -eq "" ]]
-#then
+if ( [[ "$RELEASE" == "" ]] || [[ "$RELEASEwebui" == "" ]] ) && [[ "$FORCEDOWNLOAD" -eq "" ]]
+then
   #indicates something wrong with the github call
-#  echo ******** Warning - unable to check latest release!!  Please raise an issue https://github.com/kolonuk/get_iplayer-docker/issues/new
-#fi
+  echo ******** Warning - unable to check latest release!!  Please raise an issue https://github.com/kolonuk/youtube-dl-docker/issues/new
+fi
 
 echo VERSION: $VERSION
 echo RELEASE: $RELEASE
@@ -37,9 +35,7 @@ echo VERSION webui: $VERSIONwebui
 echo RELEASE webui: $RELEASEwebui
 
 if [[ "$VERSION" == "" ]] || \
-   [[ "$VERSIONwebui" == "" ]] || \
    [[ "$VERSION" != "$RELEASE" ]] || \
-   [[ "$VERSIONwebui" != "$RELEASEwebui" ]] || \
    [[ "$FORCEDOWNLOAD" != "" ]]
 then
   echo Getting latest version of youtube-dl...
@@ -56,31 +52,54 @@ then
     rm -f /root/latest.tar.gz
     rm -Rf youtube-dl
   fi
+  # no need to restart youtube-dl as is a standalone program
+  #RESTART=1
+fi
 
+if [[ "$VERSIONwebui" == "" ]] || \
+   [[ "$VERSIONwebui" != "$RELEASEwebui" ]] || \
+   [[ "$FORCEDOWNLOAD" != "" ]]
+then
   echo Getting latest version of youtube-dl-webui...
-  #if [[ "$RELEASE" == "" ]]
-  #then
-    # No release returned from github, download manually
+  if [[ "$RELEASEwebui" == "" ]]
+  then
+  # No release returned from github, download manually
   #  wget -q https://raw.githubusercontent.com/get-iplayer/get_iplayer/master/get_iplayer.cgi -O /root/get_iplayer.cgi
-  #  chmod 755 /root/get_iplayer
-  #else
+    wget -q https://github.com/d0u9/youtube-dl-webui/archive/master.zip -O /root/latestwebui.zip
+    cd /root
+    unzip latestwebui.zip
+    rm latestwebui.zip
+    cd youtube-dl-webui-master
+    python setup.sh install
+    if [[ ! -f /root/config/youtube-dl-webui.config ]]
+    then
+      cp /root/youtube-dl-webui-master/example_config.json /root/config/youtube-dl-webui.config
+    fi
+    rm -Rf /root/youtube-dl-webui-master
+  else
     # Download and unpack release
-  #  wget -q https://github.com/get-iplayer/get_iplayer/archive/v$RELEASE.tar.gz -O /root/latest.tar.gz
-  #  cd /root
-  #  tar -xzf /root/latest.tar.gz get_iplayer-$RELEASE --directory /root/ --strip-components=1
-  #  rm /root/latest.tar.gz
-  #fi
+    wget -q https://github.com/d0u9/youtube-dl-webui/archive/$RELEASEwebui.tar.gz -O /root/latestwebui.tar.gz
+    cd /root
+    tar -xzf /root/latestwebui.tar.gz youtube-dl-webui-$RELEASE --directory /root/
+    rm /root/latestwebui.tar.gz
+    cd youtube-dl-webui-$RELEASE
+    python setup.sh install
+    if [[ ! -f /root/config/youtube-dl-webui.config ]]
+    then
+      cp /root/youtube-dl-webui-$RELEASE/example_config.json /root/config/youtube-dl-webui.config
+    fi
+    rm -Rf /root/youtube-dl-webui-$RELEASE
+  fi
+  RESTART=1
+fi
 
-  #kill current get_iplayer gracefully (is pvr/cache refresh running?)
-#  if [[ -f /root/.get_iplayer/pvr_lock ]] #|| [[ -f /root/.get_iplayer/??refreshcache_lock ]]
-#  then
-#    echo ****** Warning - updated scripts, but get_iplayer processes are running so unable to restart get_iplayer
-#  else
-    # This will kill the running perl processes, and the start script will just re-load it
-#    if [[ "$1" != "start" ]]
-#    then
-#      echo Killing get_iplayer process...
-#      killall -9 perl
-#    fi
-#  fi
+if [[ "$RESTART" == "1" ]]
+then
+  # kill current youtube-dl-webui gracefully (youtube-dl will re-run next download)
+  # This will kill the running perl processes, and the start script will just re-load it
+  if [[ "$1" != "start" ]]
+  then
+    echo Killing youtube-dl-webui process...
+    killall -9 python
+  fi
 fi
