@@ -79,15 +79,15 @@ then
     # Download and unpack release
     wget -q https://github.com/d0u9/youtube-dl-webui/archive/$RELEASEwebui.tar.gz -O /root/latestwebui.tar.gz
     cd /root
-    tar -xzf /root/latestwebui.tar.gz youtube-dl-webui-$RELEASE --directory /root/
+    tar -xzf /root/latestwebui.tar.gz youtube-dl-webui-$RELEASEwebui --directory /root/
     rm -f /root/latestwebui.tar.gz
-    cd youtube-dl-webui-$RELEASE
+    cd youtube-dl-webui-$RELEASEwebui
     python setup.sh install
     if [[ ! -f /root/config/youtube-dl-webui.config ]]
     then
-      cp /root/youtube-dl-webui-$RELEASE/example_config.json /root/config/youtube-dl-webui.config
+      cp /root/youtube-dl-webui-$RELEASEwebui/example_config.json /root/config/youtube-dl-webui.config
     fi
-    rm -Rf /root/youtube-dl-webui-$RELEASE
+    rm -Rf /root/youtube-dl-webui-$RELEASEwebui
   fi
   RESTART=1
 fi
