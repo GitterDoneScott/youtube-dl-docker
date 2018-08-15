@@ -5,7 +5,7 @@ VOLUME /root/output
 
 ADD start.sh /root/start.sh
 ADD update.sh /root/update.sh
-ADD youtube-dl-webui_kolonuk.sample /root/config/youtube-dl-webui.conf
+ADD youtube-dl-webui_kolonuk.sample /root/youtube-dl-webui.conf
 
 RUN chmod 755 /root/start.sh
 RUN chmod 755 /root/update.sh
