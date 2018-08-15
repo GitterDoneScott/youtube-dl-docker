@@ -38,19 +38,20 @@ if [[ "$VERSION" == "" ]] || \
    [[ "$VERSION" != "$RELEASE" ]] || \
    [[ "$FORCEDOWNLOAD" != "" ]]
 then
-  echo Getting latest version of youtube-dl...
   if [[ "$RELEASE" == "" ]]
   then
+    echo Getting latest version of youtube-dl...
     # No release returned from github, download manually
     wget -q https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl
     chmod a+rx /usr/local/bin/youtube-dl
   else
     # Download and unpack release
+    echo Getting latest release of youtube-dl...
     wget -q https://github.com/rg3/youtube-dl/releases/download/$RELEASE/youtube-dl-$RELEASE.tar.gz -O /root/latest.tar.gz
     tar -xzf /root/latest.tar.gz --directory /root/
     cp -f /root/youtube-dl/youtube-dl /usr/local/bin/
     rm -f /root/latest.tar.gz
-    rm -Rf youtube-dl
+    rm -Rf /root/youtube-dl
   fi
   # no need to restart youtube-dl as is a standalone program
   #RESTART=1
@@ -60,16 +61,17 @@ if [[ "$VERSIONwebui" == "" ]] || \
    [[ "$VERSIONwebui" != "$RELEASEwebui" ]] || \
    [[ "$FORCEDOWNLOAD" != "" ]]
 then
-  echo Getting latest version of youtube-dl-webui...
+  echo Getting latest release of youtube-dl-webui...
   if [[ "$RELEASEwebui" == "" ]]
   then
   # No release returned from github, download manually
+    echo Getting latest version of youtube-dl-webui...
     wget -q https://github.com/d0u9/youtube-dl-webui/archive/master.zip -O /root/latestwebui.zip
     cd /root
     unzip latestwebui.zip
     rm -f latestwebui.zip
     cd youtube-dl-webui-master
-    python setup.sh install
+    python setup.py install
     if [[ ! -f /root/config/youtube-dl-webui.config ]]
     then
       cp /root/youtube-dl-webui-master/example_config.json /root/config/youtube-dl-webui.config
@@ -77,12 +79,13 @@ then
     rm -Rf /root/youtube-dl-webui-master
   else
     # Download and unpack release
+    echo Getting latest release of youtube-dl-webui...
     wget -q https://github.com/d0u9/youtube-dl-webui/archive/$RELEASEwebui.tar.gz -O /root/latestwebui.tar.gz
     cd /root
     tar -xzf /root/latestwebui.tar.gz youtube-dl-webui-$RELEASEwebui --directory /root/
     rm -f /root/latestwebui.tar.gz
     cd youtube-dl-webui-$RELEASEwebui
-    python setup.sh install
+    python setup.py install
     if [[ ! -f /root/config/youtube-dl-webui.config ]]
     then
       cp /root/youtube-dl-webui-$RELEASEwebui/example_config.json /root/config/youtube-dl-webui.config
