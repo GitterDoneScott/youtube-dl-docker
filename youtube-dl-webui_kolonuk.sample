@@ -9,6 +9,6 @@
         "port": 8282
     },
     "youtube_dl": {
-        "format": "bestvideo[ext=mp4]"
+        "format": "bestvideo[ext=mp4]/best[ext=mp4]/best"
     }
 }
