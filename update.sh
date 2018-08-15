@@ -32,7 +32,7 @@ fi
 echo youtube-dl installed version: $VERSION
 echo youtube-dl released version:  $RELEASE
 echo youtube-dl-webui installed version: $VERSIONwebui
-echo youtube-dl-webui installed version: $RELEASEwebui
+echo youtube-dl-webui released version:  $RELEASEwebui
 
 if [[ "$VERSION" == "" ]] || \
    [[ "$VERSION" != "$RELEASE" ]] || \
@@ -61,7 +61,6 @@ if [[ "$VERSIONwebui" == "" ]] || \
    [[ "$VERSIONwebui" != "$RELEASEwebui" ]] || \
    [[ "$FORCEDOWNLOAD" != "" ]]
 then
-  echo Getting latest release of youtube-dl-webui...
   if [[ "$RELEASEwebui" == "" ]]
   then
   # No release returned from github, download manually
