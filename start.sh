@@ -38,7 +38,7 @@ then
   # Keep restarting - for when the get_iplayer script is updated
   while true
   do
-    /usr/local/bin/youtube-dl-webui -C /root/config/youtube-dl-webui.conf
+    /usr/local/bin/youtube-dl-webui -c /root/config/youtube-dl-webui.conf
   done 
 else
   echo err2 - Error occurred, pausing for 9999 seconds for investigation
