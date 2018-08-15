@@ -29,10 +29,10 @@ then
   echo ******** Warning - unable to check latest release!!  Please raise an issue https://github.com/kolonuk/youtube-dl-docker/issues/new
 fi
 
-echo VERSION: $VERSION
-echo RELEASE: $RELEASE
-echo VERSION webui: $VERSIONwebui
-echo RELEASE webui: $RELEASEwebui
+echo youtube-dl installed version: $VERSION
+echo youtube-dl released version:  $RELEASE
+echo youtube-dl-webui installed version: $VERSIONwebui
+echo youtube-dl-webui installed version: $RELEASEwebui
 
 if [[ "$VERSION" == "" ]] || \
    [[ "$VERSION" != "$RELEASE" ]] || \
@@ -71,7 +71,7 @@ then
     unzip latestwebui.zip
     rm -f latestwebui.zip
     cd youtube-dl-webui-master
-    python setup.py install
+    python setup.py -q install
     if [[ ! -f /root/config/youtube-dl-webui.config ]]
     then
       cp /root/youtube-dl-webui-master/example_config.json /root/config/youtube-dl-webui.config
@@ -85,7 +85,7 @@ then
     tar -xzf /root/latestwebui.tar.gz youtube-dl-webui-$RELEASEwebui --directory /root/
     rm -f /root/latestwebui.tar.gz
     cd youtube-dl-webui-$RELEASEwebui
-    python setup.py install
+    python setup.py -q install
     if [[ ! -f /root/config/youtube-dl-webui.config ]]
     then
       cp /root/youtube-dl-webui-$RELEASEwebui/example_config.json /root/config/youtube-dl-webui.config
