@@ -71,7 +71,7 @@ then
     rm -f latestwebui.zip
     cd youtube-dl-webui-master
     python setup.py -q install
-    if [[ ! -f /root/config/youtube-dl-webui.config ]]
+    if [[ ! -f /root/config/youtube-dl-webui.conf ]]
     then
       cp /root/youtube-dl-webui_kolonuk.sample /root/config/youtube-dl-webui.conf
     fi
@@ -85,7 +85,7 @@ then
     rm -f /root/latestwebui.tar.gz
     cd youtube-dl-webui-$RELEASEwebui
     python setup.py -q install
-    if [[ ! -f /root/config/youtube-dl-webui.config ]]
+    if [[ ! -f /root/config/youtube-dl-webui.conf ]]
     then
       cp /root/youtube-dl-webui_kolonuk.sample /root/config/youtube-dl-webui.conf
     fi
