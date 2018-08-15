@@ -39,6 +39,7 @@ then
   while true
   do
     /usr/local/bin/youtube-dl-webui -c /root/config/youtube-dl-webui.conf
+    sleep 5
   done 
 else
   echo err2 - Error occurred, pausing for 9999 seconds for investigation
