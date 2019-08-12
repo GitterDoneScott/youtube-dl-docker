@@ -34,6 +34,13 @@ echo youtube-dl released version:  $RELEASE
 echo youtube-dl-webui installed version: $VERSIONwebui
 echo youtube-dl-webui released version:  $RELEASEwebui
 
+# generate youtube-dl-webui.conf from template:
+echo "=> Creating youtube-dl-webui.conf config file from template..."
+dockerize -template "${CONFIG_FOLDER}/youtube-dl-webui.tmpl" \
+ | grep -Ev "^[[:space:]]*#|^$" \
+ | uniq > "${YOUTUBE_DL_WEBUI_CONFIG}"
+
+
 if [[ "$VERSION" == "" ]] || \
    [[ "$VERSION" != "$RELEASE" ]] || \
    [[ "$FORCEDOWNLOAD" != "" ]]
