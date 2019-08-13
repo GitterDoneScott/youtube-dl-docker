@@ -1,14 +1,16 @@
 FROM kolonuk/youtube-dl-docker-base
 
-VOLUME /root/config
-VOLUME /root/output
+LABEL issues_youtube-dl="Comments/issues for youtube-dl: https://github.com/rg3/youtube-dl/issues"
+LABEL issues_youtube-dl-webui="Comments/issues for youtube-dl: https://github.com/d0u9/youtube-dl-webui/issues"
 
-ADD start.sh /root/start.sh
-ADD update.sh /root/update.sh
-ADD youtube-dl-webui_kolonuk.sample /root/youtube-dl-webui_kolonuk.sample
+ENV CONFIG_FOLDER=/root/config \
+    DOCKERIZE_VERSION=0.6.1 \
+    YOUTUBE_DL_WEBUI_CONFIG="youtube-dl-webui.conf" \
+    OUTPUT_FOLDER=/root/output \
+    YOUTUBE_DL_WEBUI_PORT=8282 \
+    YOUTUBE_DL_FORMAT="bestvideo[ext=mp4]/best[ext=mp4]/best"
 
-RUN chmod 755 /root/start.sh
-RUN chmod 755 /root/update.sh
+VOLUME ${OUTPUT_FOLDER}
 
 # Get Dockerize for configuration templating TODO remove --no-check-certificate
 RUN set -ex \
@@ -18,9 +20,13 @@ RUN set -ex \
     && chmod +x "/usr/local/bin/dockerize" \
     && rm dockerize.tar.gz
 
-LABEL issues_youtube-dl="Comments/issues for youtube-dl: https://github.com/rg3/youtube-dl/issues"
-LABEL issues_youtube-dl-webui="Comments/issues for youtube-dl: https://github.com/d0u9/youtube-dl-webui/issues"
+ADD start.sh "/root/start.sh"
+ADD update.sh "/root/update.sh"
+ADD "${YOUTUBE_DL_WEBUI_CONFIG}.tmpl" "${CONFIG_FOLDER}/${YOUTUBE_DL_WEBUI_CONFIG}.tmpl"
 
-EXPOSE 8282
+RUN chmod 755 "/root/start.sh"
+RUN chmod 755 "/root/update.sh"
+
+EXPOSE ${YOUTUBE_DL_WEBUI_PORT}
 
 ENTRYPOINT ["/bin/bash", "/root/start.sh"]

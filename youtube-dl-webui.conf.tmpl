@@ -1,0 +1,14 @@
+{
+    "general": {
+        "download_dir": "{{ .Env.OUTPUT_FOLDER }}",
+        "db_path": "{{ .Env.CONFIG_FOLDER }}/youtube_dl_webui.db",
+        "log_size": 10
+    },
+    "server": {
+        "host": "0.0.0.0",
+        "port": {{ .Env.YOUTUBE_DL_WEBUI_PORT }}
+    },
+    "youtube_dl": {
+        "format": "{{ .Env.YOUTUBE_DL_FORMAT }}"
+    }
+}
